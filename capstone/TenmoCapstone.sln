@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.779
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TenmoServer", "TenmoServer\TenmoServer.csproj", "{C6335DAA-53B6-47A9-9E96-29600F83FE1A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TenmoClient", "..\client\TenmoClient\TenmoClient.csproj", "{02CC05FC-29A3-4877-B284-0C8117218356}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TenmoClient", "TenmoClient\TenmoClient.csproj", "{02CC05FC-29A3-4877-B284-0C8117218356}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

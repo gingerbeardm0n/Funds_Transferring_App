@@ -8,58 +8,68 @@ namespace TenmoClient
     {
         private static readonly AuthService authService = new AuthService();
 
-        public  void Run()
+        public void Run()
         {
-            int loginRegister = -1;
-            while (loginRegister != 1 && loginRegister != 2)
+
+            while (true)
             {
                 Console.WriteLine("Welcome to TEnmo!");
                 Console.WriteLine("1: Login");
                 Console.WriteLine("2: Register");
+                Console.WriteLine("3: Exit");
                 Console.Write("Please choose an option: ");
 
-                if (!int.TryParse(Console.ReadLine(), out loginRegister))
+                int loginRegister = -1;
+
+                try
                 {
-                    Console.WriteLine("Invalid input. Please enter only a number.");
-                }
-                else if (loginRegister == 1)
-                {
-                    while (!UserService.IsLoggedIn()) //will keep looping until user is logged in
+                    if (!int.TryParse(Console.ReadLine(), out loginRegister))
+                    {
+                        Console.WriteLine("Invalid input. Please enter only a number.");
+                    }
+
+                    else if (loginRegister == 1)
                     {
                         LoginUser loginUser = PromptForLogin();
                         API_User user = authService.Login(loginUser);
                         if (user != null)
                         {
                             UserService.SetLogin(user);
+                            MenuSelection();
                         }
                     }
-                }
-                else if (loginRegister == 2)
-                {
-                    bool isRegistered = false;
-                    while (!isRegistered) //will keep looping until user is registered
+
+                    else if (loginRegister == 2)
                     {
                         LoginUser registerUser = PromptForLogin();
-                        isRegistered = authService.Register(registerUser);
+                        bool isRegistered = authService.Register(registerUser);
                         if (isRegistered)
                         {
                             Console.WriteLine("");
                             Console.WriteLine("Registration successful. You can now log in.");
-                            loginRegister = -1; //reset outer loop to allow choice for login
                         }
                     }
+
+                    else if (loginRegister == 3)
+                    {
+                        Console.WriteLine("Goodbye!");
+                        Environment.Exit(0);
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Invalid selection.");
+                    }
                 }
-                else
+
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Invalid selection.");
+                    Console.WriteLine("Error - " + ex.Message);
                 }
             }
-
-
-            MenuSelection();
         }
 
-        private  void MenuSelection()
+        private void MenuSelection()
         {
             int menuSelection = -1;
             while (menuSelection != 0)
@@ -77,44 +87,58 @@ namespace TenmoClient
                 Console.WriteLine("---------");
                 Console.Write("Please choose an option: ");
 
-                if (!int.TryParse(Console.ReadLine(), out menuSelection))
+                try
                 {
-                    Console.WriteLine("Invalid input. Please enter only a number.");
-                }
-                else if (menuSelection == 1)
-                {
+                    if (!int.TryParse(Console.ReadLine(), out menuSelection))
+                    {
+                        Console.WriteLine("Invalid input. Please enter only a number.");
+                    }
+                    else if (menuSelection == 1)
+                    {
 
-                }
-                else if (menuSelection == 2)
-                {
+                    }
+                    else if (menuSelection == 2)
+                    {
 
-                }
-                else if (menuSelection == 3)
-                {
+                    }
+                    else if (menuSelection == 3)
+                    {
 
-                }
-                else if (menuSelection == 4)
-                {
+                    }
+                    else if (menuSelection == 4)
+                    {
 
-                }
-                else if (menuSelection == 5)
-                {
+                    }
+                    else if (menuSelection == 5)
+                    {
 
-                }
-                else if (menuSelection == 6)
-                {
+                    }
+                    else if (menuSelection == 6)
+                    {
 
+                    }
+                    else if (menuSelection == 7)
+                    {
+                        Console.WriteLine("");
+                        UserService.SetLogin(new API_User()); //wipe out previous login info
+                        return; //return to register/login menu
+                    }
+                    else if (menuSelection == 0)
+                    {
+                        Console.WriteLine("Goodbye!");
+                        Environment.Exit(0);
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Please try again");
+                        Console.WriteLine();
+                    }
                 }
-                else if (menuSelection == 7)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("");
-                    UserService.SetLogin(new API_User()); //wipe out previous login info
-                    Run(); //return to entry point
-                }
-                else
-                {
-                    Console.WriteLine("Goodbye!");
-                    Environment.Exit(0);
+                    Console.WriteLine("Error - " + ex.Message);
+                    Console.WriteLine();
                 }
             }
         }

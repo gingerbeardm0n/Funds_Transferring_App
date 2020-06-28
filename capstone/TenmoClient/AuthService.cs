@@ -7,7 +7,7 @@ namespace TenmoClient
 {
     public class AuthService
     {
-        private readonly static string API_BASE_URL = "https://localhost:53041/";
+        private readonly static string API_BASE_URL = "https://localhost:44315/";
         private readonly IRestClient client = new RestClient();
 
         //login endpoints
@@ -19,20 +19,18 @@ namespace TenmoClient
 
             if (response.ResponseStatus != ResponseStatus.Completed)
             {
-                Console.WriteLine("An error occurred communicating with the server.");
-                return false;
+                throw new Exception("An error occurred communicating with the server.");
             }
             else if (!response.IsSuccessful)
             {
                 if (!string.IsNullOrWhiteSpace(response.Data.Message))
                 {
-                    Console.WriteLine("An error message was received: " + response.Data.Message);
+                    throw new Exception("An error message was received: " + response.Data.Message);
                 }
                 else
                 {
-                    Console.WriteLine("An error response was received from the server. The status code is " + (int)response.StatusCode);
+                    throw new Exception("An error response was received from the server. The status code is " + (int)response.StatusCode);
                 }
-                return false;
             }
             else
             {
@@ -48,20 +46,20 @@ namespace TenmoClient
 
             if (response.ResponseStatus != ResponseStatus.Completed)
             {
-                Console.WriteLine("An error occurred communicating with the server.");
-                return null;
+                throw new Exception("An error occurred communicating with the server.");
+
             }
             else if (!response.IsSuccessful)
             {
                 if (!string.IsNullOrWhiteSpace(response.Data.Message))
                 {
-                    Console.WriteLine("An error message was received: " + response.Data.Message);
+                    throw new Exception("An error message was received: " + response.Data.Message);
                 }
                 else
                 {
-                    Console.WriteLine("An error response was received from the server. The status code is " + (int)response.StatusCode);
+                    throw new Exception("An error response was received from the server. The status code is " + (int)response.StatusCode);
                 }
-                return null;
+
             }
             else
             {
