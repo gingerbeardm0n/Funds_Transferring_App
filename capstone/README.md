@@ -4,6 +4,9 @@ Congratulations—you've landed a job with TEnmo, whose product is an online pay
 
 ## Use cases
 
+### Required Use Cases
+You should attempt to complete all of the following required use cases.
+
 1. **[COMPLETE]** As a user of the system, I need to be able to register myself with a username and password.
    1. A new registered user starts with an initial balance of 1,000 TE Bucks.
    2. The ability to register has been provided in your starter code.
@@ -11,23 +14,32 @@ Congratulations—you've landed a job with TEnmo, whose product is an online pay
    1. Logging in returns an Authentication Token. I need to include this token with all my subsequent interactions with the system outside of registering and logging in.
    2. The ability to log in has been provided in your starter code.
 3. As an authenticated user of the system, I need to be able to see my Account Balance.
-4. As an authenticated user of the system, I need to be able to *request* a transfer of a specific amount of TE Bucks from another registered user.
+4. As an authenticated user of the system, I need to be able to *send* a transfer of a specific amount of TE Bucks to a registered user.
+   1. I should be able to choose from a list of users to send TE Bucks to.
+   2. A transfer includes the User IDs of the from and to users and the amount of TE Bucks.
+   3. The receiver's account balance is increased by the amount of the transfer.
+   4. The sender's account balance is decreased by the amount of the transfer.
+   5. I can't send more TE Bucks than I have in my account.
+   6. A Sending Transfer has an initial status of "approve."
+5. As an authenticated user of the system, I need to be able to see transfers I have sent or received.
+6. As an authenticated user of the system, I need to be able to retrieve the details of any transfer based upon the transfer ID.
+
+### Optional Use Cases
+If you complete all of the required use cases and are looking for additional challenge, complete as many of the following optional use cases as you can.
+
+7. As an authenticated user of the system, I need to be able to *request* a transfer of a specific amount of TE Bucks from another registered user.
    1. I should be able to choose from a list of users to request TE Bucks from.
    2. A transfer includes the User IDs of the from and to users and the amount of TE Bucks.
    3. A Request Transfer has an initial status of "pending."
-5. As an authenticated user of the system, I need to be able to *send* a transfer of a specific amount of TE Bucks to a registered user.
-   1. I should be able to choose from a list of users to send TE Bucks to.
-   2. A transfer includes the User IDs of the from and to users and the amount of TE Bucks.
-   3. I can't send more TE Bucks than I have in my account.
-   4. A Sending Transfer has an initial status of "approve."
-6. As an authenticated user of the system, I need to be able to see my "pending" transfers.
-7. As an authenticated user of the system, I need to be able to either approve or reject a Request Transfer.
+   4. No account balance changes until the request is approved.
+   5. The transfer request should appear in both users' list of transfers (use case #5).
+8. As an authenticated user of the system, I need to be able to see my "pending" transfers.
+9. As an authenticated user of the system, I need to be able to either approve or reject a Request Transfer.
    1. I can't "approve" a given Request Transfer for more TE Bucks than I have in my account.
-   2. The requester's account balance is increased by the amount of the request.
-   3. The requestee's account balance is decreased by the amount of the request.
-   4. The Request Transfer status is "approved" if I approve, or "rejected" if I reject the request.
-8. As an authenticated user of the system, I need to be able to see all my requesting and sending transfers regardless of transfer status.
-9. As an authenticated user of the system, I need to be able to retrieve the details of any transfer based upon the transfer ID.
+   2. The Request Transfer status is "approved" if I approve, or "rejected" if I reject the request.
+   3. If the transfer is approved, the requester's account balance is increased by the amount of the request.
+   4. If the transfer is approved, the requestee's account balance is decreased by the amount of the request.
+   5. If the transfer is rejected, no account balance changes.
 
 ## Sample screens
 
@@ -36,21 +48,7 @@ Congratulations—you've landed a job with TEnmo, whose product is an online pay
 Your current account balance is: $9999.99
 ```
 
-### Use Case 4 - Requesting TE Bucks
-```
--------------------------------------------
-Users
-ID          Name
--------------------------------------------
-313         Bernice
-54          Larry
----------
-
-Enter ID of user you are requesting from (0 to cancel):
-Enter amount:
-```
-
-### Use Case 5 - Send TE Bucks
+### Use Case 4 - Send TE Bucks
 ```
 -------------------------------------------
 Users
@@ -64,28 +62,7 @@ Enter ID of user you are sending to (0 to cancel):
 Enter amount:
 ```
 
-### Use Case 6 - Pending requests
-```
--------------------------------------------
-Pending Transfers
-ID          From                    Amount
--------------------------------------------
-88          Bernice                $ 142.56
-147         Larry                  $  10.17
----------
-Please enter transfer ID to approve/reject (0 to cancel): "
-```
-
-### Use Case 7 - Approve or reject pending transfer
-```
-1: Approve
-2: Reject
-0: Don't approve or reject
----------
-Please choose an option:
-```
-
-### Use Case 8 - View transfers
+### Use Case 5 - View transfers
 ```
 -------------------------------------------
 Transfers
@@ -97,7 +74,7 @@ ID          From/To                 Amount
 Please enter transfer ID to view details (0 to cancel): "
 ```
 
-### Use Case 9 - Transfer details
+### Use Case 6 - Transfer details
 ```
 --------------------------------------------
 Transfer Details
@@ -108,6 +85,41 @@ Transfer Details
  Type: Send
  Status: Approved
  Amount: $903.14
+```
+
+### Use Case 7 - Requesting TE Bucks
+```
+-------------------------------------------
+Users
+ID          Name
+-------------------------------------------
+313         Bernice
+54          Larry
+---------
+
+Enter ID of user you are requesting from (0 to cancel):
+Enter amount:
+```
+
+### Use Case 8 - Pending requests
+```
+-------------------------------------------
+Pending Transfers
+ID          To                     Amount
+-------------------------------------------
+88          Bernice                $ 142.56
+147         Larry                  $  10.17
+---------
+Please enter transfer ID to approve/reject (0 to cancel): "
+```
+
+### Use Case 9 - Approve or reject pending transfer
+```
+1: Approve
+2: Reject
+0: Don't approve or reject
+---------
+Please choose an option:
 ```
 
 ## Database Schema
@@ -190,3 +202,7 @@ In the database folder, you'll find the database creation script `tenmo.sql`. Op
 The user registration and authentication functionality for the system has already been implemented. If you review the login code in `Program.cs`, you'll notice that after a successful authentication, the user is stored in `UserService`, which is a helper class to keep track of the logged in user and provide information about them.
 
 There's also a method called `UserService.GetToken()` that returns the authorization token—meaning JWT—of the logged in user. When the use cases above refer to an "authenticated user", this means a request that includes the token.
+
+## Set startup projects
+
+Since both the client and server applications are included in the solution, you'll have to configure the solution to run both projects simultaneously. In Visual Studio, right-click the solution and select "properties." In the window that appears, select "Multiple startup projects" and set both "TenmoClient" and "TenmoServer" to have the action `Start`.
