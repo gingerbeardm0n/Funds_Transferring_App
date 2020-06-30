@@ -9,8 +9,12 @@ namespace TenmoClient
     public class ConsoleService
     {
         private static readonly AuthService authService = new AuthService();
+<<<<<<< HEAD
         //UserAccountDAO userAccountAccess = new UserAccountDAO();
         //User balanceUser = new User();
+=======
+        UserAccountDAO userAccountAccess = new UserAccountDAO();
+>>>>>>> 58bd41cf70bcfaaac842be8102bfa849c7fd33e0
 
         public void Run()
         {
@@ -100,12 +104,15 @@ namespace TenmoClient
                     else if (menuSelection == 1)
                     {
                         
+<<<<<<< HEAD
                         API_User user = Get
                         if (user != null)
                         {
                             UserService.SetLogin(user);
                             MenuSelection();
                         }
+=======
+>>>>>>> 58bd41cf70bcfaaac842be8102bfa849c7fd33e0
                     }
                     else if (menuSelection == 2)
                     {
