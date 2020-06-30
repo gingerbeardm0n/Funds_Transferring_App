@@ -78,11 +78,11 @@ namespace TenmoClient
                 Console.WriteLine("Welcome to TEnmo! Please make a selection: ");
                 Console.WriteLine("1: View your current balance");
                 Console.WriteLine("2: View your past transfers"); //view details through here
-                Console.WriteLine("3: View your pending requests"); //ability to approve/reject through here
+                //Console.WriteLine("3: View your pending requests"); //ability to approve/reject through here
                 Console.WriteLine("4: Send TE bucks");
-                Console.WriteLine("5: Request TE bucks");
+                //Console.WriteLine("5: Request TE bucks");
                 Console.WriteLine("6: View list of users");
-                Console.WriteLine("7: Log in as different user");
+               // Console.WriteLine("7: Log in as different user");
                 Console.WriteLine("0: Exit");
                 Console.WriteLine("---------");
                 Console.Write("Please choose an option: ");
