@@ -10,9 +10,9 @@ namespace TenmoServer.DAO
     public class UserAccountDAO
     {
         private string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=tenmo;Integrated Security=True";
-        private string SqlGetBalance = @"SELECT balance FROM accounts WHERE user_id = @UserId;";
+        private string SqlGetBalance = @"SELECT balance FROM accounts;"; //WHERE user_id = @UserId
 
-        public decimal ReturnBalance(string UserId)
+        public decimal ReturnBalance()
         {
             User access = new User();
             decimal balance = 0;

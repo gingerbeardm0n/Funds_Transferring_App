@@ -43,7 +43,14 @@ namespace TenmoServer.Controllers
                 string token = tokenGenerator.GenerateToken(user.UserId, user.Username/*, user.Role*/);
 
                 // Create a ReturnUser object to return to the client
-                ReturnUser retUser = new ReturnUser() { UserId = user.UserId, Username = user.Username, /*Role = user.Role,*/ Token = token };
+                ReturnUser retUser = new ReturnUser()
+                {
+                    UserId = user.UserId,
+                    Username = user.Username,
+                    /*Role = user.Role,*/
+                    Token = token,
+                    //Balance = user.Balance;
+                };
 
                 // Switch to 200 OK
                 result = Ok(retUser);

@@ -18,6 +18,7 @@
         public string Username { get; set; }
         //public string Role { get; set; }
         public string Token { get; set; }
+        //public decimal Balance { get; set; }//todo need to set this the same way that UserId, Username, and Token are set
     }
 
     /// <summary>
