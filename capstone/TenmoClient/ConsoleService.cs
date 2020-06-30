@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using TenmoClient.Data;
+using TenmoServer.DAO;
+
 
 namespace TenmoClient
 {
     public class ConsoleService
     {
         private static readonly AuthService authService = new AuthService();
-        
+        UserAccountDAO userAccountAccess = new UserAccountDAO();
 
         public void Run()
         {
@@ -31,7 +33,7 @@ namespace TenmoClient
 
                     else if (loginRegister == 1)
                     {
-                        LoginUser loginUser = PromptForLogin();
+                        LoginUser loginUser = PromptForLogin();//JNB added Data to beginning of line
                         API_User user = authService.Login(loginUser);
                         if (user != null)
                         {
@@ -42,7 +44,7 @@ namespace TenmoClient
 
                     else if (loginRegister == 2)
                     {
-                        LoginUser registerUser = PromptForLogin();
+                        LoginUser registerUser = PromptForLogin();//JNB added Data to beginning of line
                         bool isRegistered = authService.Register(registerUser);
                         if (isRegistered)
                         {
@@ -96,6 +98,8 @@ namespace TenmoClient
                     }
                     else if (menuSelection == 1)
                     {
+                        userAccountAccess.ReturnBalance();
+                        
                     }
                     else if (menuSelection == 2)
                     {
