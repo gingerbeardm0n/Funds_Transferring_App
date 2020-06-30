@@ -7,6 +7,7 @@ namespace TenmoClient
     public class ConsoleService
     {
         private static readonly AuthService authService = new AuthService();
+        
 
         public void Run()
         {
@@ -95,7 +96,6 @@ namespace TenmoClient
                     }
                     else if (menuSelection == 1)
                     {
-
                     }
                     else if (menuSelection == 2)
                     {
