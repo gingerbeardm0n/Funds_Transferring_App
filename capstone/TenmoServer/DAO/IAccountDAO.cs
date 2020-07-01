@@ -8,7 +8,7 @@ namespace TenmoServer.DAO
 {
     public interface IAccountDAO
     {
-        decimal ReturnBalance();
+        decimal GetBalance(int UserID);
 
         bool AddTransfer(Transfer transfer);
     }

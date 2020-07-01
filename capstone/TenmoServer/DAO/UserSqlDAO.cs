@@ -9,6 +9,8 @@ namespace TenmoServer.DAO
 {
     public class UserSqlDAO : IUserDAO
     {
+        //private string connectionStringForDummies = @"Data Source=.\SQLEXPRESS;Initial Catalog=tenmo;Integrated Security=True";
+
         private readonly string connectionString;
         const decimal startingBalance = 1000;
 

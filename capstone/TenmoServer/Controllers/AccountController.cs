@@ -15,8 +15,16 @@ namespace TenmoServer.Controllers
     [Authorize]
     public class AccountController : ControllerBase
     {
-        private IUserAccountDAO userAccountDAO;
-        UserAccountDAO access = new UserAccountDAO();
+        
+        private readonly IAccountDAO accountDAO;
+        private readonly IUserDAO userDAO;
+
+        public AccountController(IUserDAO userDAO, IAccountDAO accountDAO)
+        {
+            this.userDAO = userDAO;
+            this.accountDAO = accountDAO;
+        }
+
 
         [Authorize]
         [HttpGet("balance")]
@@ -33,16 +41,16 @@ namespace TenmoServer.Controllers
                 }
             }
 
-            decimal balance = access.ReturnBalance(userID);
+            decimal balance = accountDAO.GetBalance(userID);
 
             return balance;
         }
 
         [Authorize]
         [HttpPost("transfer")]
-        public ActionResult CreateTransfer(Transfers transfer)
+        public ActionResult CreateTransfer(Transfer transfer)
         {
-            bool result = userAccountDAO.AddTransfer(transfer);
+            bool result = accountDAO.AddTransfer(transfer);
 
             if (result)
             {
@@ -53,5 +61,16 @@ namespace TenmoServer.Controllers
                 return BadRequest();
             }
         }
+
+        [Authorize]
+        [HttpGet("get_users")]
+        public List<User> GetUsers()
+        {
+            List<User> users = userDAO.GetUsers();
+            return users;
+        }
+
+
+
     }
 }

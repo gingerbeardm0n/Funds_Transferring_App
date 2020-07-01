@@ -10,7 +10,7 @@ namespace TenmoClient
     public class ConsoleService
     {
         private static readonly AuthService authService = new AuthService();
-        private static readonly AccountService accountService = new AccountService(); 
+        private static readonly AccountServiceAPI accountService = new AccountServiceAPI(); 
         
         public void Run()
         {

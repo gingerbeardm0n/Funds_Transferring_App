@@ -7,7 +7,7 @@ using TenmoClient.Data;
 
 namespace TenmoClient
 {
-    class AccountService : AuthService
+    class AccountServiceAPI : AuthService
     {
         private readonly static string API_BASE_URL = "https://localhost:44315/account/";
         // Wnat to use the restlient defined in the parent class    -   private readonly IRestClient client = new RestClient();
@@ -40,6 +40,8 @@ namespace TenmoClient
                 return response.Data;
             }
         }
+
+        
 
 
 

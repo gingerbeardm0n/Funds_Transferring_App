@@ -14,11 +14,16 @@ using System.Web;
 
 namespace TenmoServer.DAO
 {
-    public class UserAccountDAO
+    public class AccountDAO : IAccountDAO
     {
-        private string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=tenmo;Integrated Security=True";
+        private string connectionString;
 
-        public decimal ReturnBalance(int userID)
+        public AccountDAO(string dbConnectionString)
+        {
+            connectionString = dbConnectionString;
+        }
+
+        public decimal GetBalance(int userID)
         {
             ReturnUser access = new ReturnUser();
             //access.UserId = 1; --> hardcoded to help test
@@ -46,11 +51,50 @@ namespace TenmoServer.DAO
             }
         }
 
-        
-        public List<Transfers> AddTransfer()
+
+        public bool AddTransfer(Transfer transfer)
         {
-            List<Transfers> TransferHistory = new List<Transfers>();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(
+                        "INSERT INTO transfer VALUES" +
+                        "(@transfer_type_id, @transfer_status_id, @account_from, @account_to, @amount)", conn);
+                    cmd.Parameters.AddWithValue("@transfer_type_id", 2);
+                    cmd.Parameters.AddWithValue("@transfer_status_id", 2);
+                    cmd.Parameters.AddWithValue("@account_from", transfer.accountFrom);
+                    cmd.Parameters.AddWithValue("@account_to", transfer.accountTo);
+                    cmd.Parameters.AddWithValue("@amount", transfer.amount);
+
+                    int count = cmd.ExecuteNonQuery();
+
+                    if (count == 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                    
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw;
+            }
+        }
+
+
+
+        public List<Transfer> DisplayTransfers()
+        {
+            List<Transfer> TransferHistory = new List<Transfer>();
             ReturnUser access = new ReturnUser();
+            Transfer transferAccess = new Transfer();
 
             try
             {
@@ -58,7 +102,7 @@ namespace TenmoServer.DAO
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand("SELECT user_id, username, password_hash, salt FROM users", conn);
-                    cmd.Parameters.AddWithValue("@transfer", transfer);
+                    cmd.Parameters.AddWithValue("@", access);
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     return TransferHistory;
