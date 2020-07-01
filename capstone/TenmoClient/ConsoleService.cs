@@ -100,12 +100,18 @@ namespace TenmoClient
                     else if (menuSelection == 1)
                     {
                         decimal balance = accountService.GetBalance();
-                        Console.WriteLine(balance);
+                        Console.WriteLine();
+                        Console.WriteLine("Your current account balance is: $" + balance);
+                        Console.ReadLine();
                        
                     }
                     else if (menuSelection == 2)
                     {
+                        Console.WriteLine();
 
+
+
+                        Console.WriteLine();
                     }
                     else if (menuSelection == 3)
                     {
@@ -113,7 +119,16 @@ namespace TenmoClient
                     }
                     else if (menuSelection == 4)
                     {
+                        Console.WriteLine("Send TE Bucks");
+                        Console.Write("Enter ID of user you are sending to (Enter 0 to cancel): ");
+                        string userID = Console.ReadLine();
+                        int.Parse(userID);
 
+                        Console.Write("Enter amount: $");
+                        string transferAmount = Console.ReadLine();
+                        decimal.Parse(transferAmount);
+
+                        Console.ReadLine();
                     }
                     else if (menuSelection == 5)
                     {
@@ -209,5 +224,9 @@ namespace TenmoClient
             return pass;
         }
 
+        //private List<Transfers> TransferList()
+        //{
+
+        //}
     }
 }

@@ -10,6 +10,6 @@ namespace TenmoServer.DAO
     {
         decimal ReturnBalance();
 
-
+        bool AddTransfer(Transfers transfer);
     }
 }

@@ -37,5 +37,21 @@ namespace TenmoServer.Controllers
 
             return balance;
         }
+
+        [Authorize]
+        [HttpPost("transfer")]
+        public ActionResult CreateTransfer(Transfers transfer)
+        {
+            bool result = userAccountDAO.AddTransfer(transfer);
+
+            if (result)
+            {
+                return Created("", transfer);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
     }
 }
