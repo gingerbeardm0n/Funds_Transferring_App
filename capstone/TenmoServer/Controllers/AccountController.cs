@@ -20,9 +20,20 @@ namespace TenmoServer.Controllers
 
         [Authorize]
         [HttpGet("balance")]
-        public decimal GetBalance(string userId)
+        public decimal GetBalance()
         {
-            decimal balance = access.ReturnBalance();
+            var user = User.Identity.Name;
+            int userID = -1;
+
+            foreach (var claim in User.Claims)
+            {
+                if (claim.Type == "sub")
+                {
+                    userID = int.Parse(claim.Value);
+                }
+            }
+
+            decimal balance = access.ReturnBalance(userID);
 
             return balance;
         }
