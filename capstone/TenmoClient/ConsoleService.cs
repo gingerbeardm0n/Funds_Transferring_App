@@ -99,8 +99,6 @@ namespace TenmoClient
                     }
                     else if (menuSelection == 1)
                     {
-
-
                         decimal balance = accountService.GetBalance();
                         Console.WriteLine(balance);
                        
