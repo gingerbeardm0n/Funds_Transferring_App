@@ -6,10 +6,10 @@ using TenmoServer.Models;
 
 namespace TenmoServer.DAO
 {
-    public interface IUserAccountDAO
+    public interface IAccountDAO
     {
         decimal ReturnBalance();
 
-        bool AddTransfer(Transfers transfer);
+        bool AddTransfer(Transfer transfer);
     }
 }
