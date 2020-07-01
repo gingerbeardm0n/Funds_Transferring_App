@@ -13,11 +13,11 @@ namespace TenmoServer.Controllers
     [Authorize]
     public class AccountController : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("balance")]
         public decimal GetBalance()
         {
 
-            return 0;
+            return 100.00M;
         }
     }
 }

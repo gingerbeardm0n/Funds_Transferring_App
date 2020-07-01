@@ -7,16 +7,16 @@ using TenmoClient.Data;
 
 namespace TenmoClient
 {
-    class AccountService
+    class AccountService : AuthService
     {
-        private readonly static string API_BASE_URL = "https://localhost:44315/";
-        private readonly IRestClient client = new RestClient();
+        private readonly static string API_BASE_URL = "https://localhost:44315/account/";
+        // Wnat to use the restlient defined in the parent class    -   private readonly IRestClient client = new RestClient();
 
-        public API_User GetAccount()
+        public decimal GetBalance()
         {
-            RestRequest request = new RestRequest(API_BASE_URL + "/balance");//changed from "get_balance" to "balance"
-            request.AddJsonBody(loggedInUser);
-            IRestResponse<API_User> response = client.Get<API_User>(request);
+            RestRequest request = new RestRequest(API_BASE_URL + "balance");//changed from "get_balance" to "balance"
+            //get's don't have bodies
+            IRestResponse<decimal> response = client.Get<decimal>(request);
             if (response.ResponseStatus != ResponseStatus.Completed)
             {
                 throw new Exception("An error occurred communicating with the server.");
@@ -24,9 +24,9 @@ namespace TenmoClient
             }
             else if (!response.IsSuccessful)
             {
-                if (!string.IsNullOrWhiteSpace(response.Data.Message))
+                if (!string.IsNullOrWhiteSpace(response.Data.ToString()))
                 {
-                    throw new Exception("An error message was received: " + response.Data.Message);
+                    throw new Exception("An error message was received: " + response.Data);
                 }
                 else
                 {
@@ -36,7 +36,7 @@ namespace TenmoClient
             }
             else
             {
-                client.Authenticator = new JwtAuthenticator(response.Data.Token);
+                // this was done at login so dont need to do it again, token was assign at login    client.Authenticator = new JwtAuthenticator(response.Data.ToString());
                 return response.Data;
             }
         }
