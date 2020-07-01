@@ -10,15 +10,8 @@ namespace TenmoClient
     public class ConsoleService
     {
         private static readonly AuthService authService = new AuthService();
-
-        //UserAccountDAO userAccountAccess = new UserAccountDAO();
-        //User balanceUser = new User();
-
         private static readonly AccountService accountService = new AccountService(); 
-
-
-
-
+        
         public void Run()
         {
 
