@@ -10,8 +10,8 @@ namespace TenmoClient
     public class ConsoleService
     {
         private static readonly AuthService authService = new AuthService();
-        private static readonly AccountServiceAPI accountService = new AccountServiceAPI(); 
-        
+        private static readonly AccountServiceAPI accountService = new AccountServiceAPI();
+
         public void Run()
         {
 
@@ -86,7 +86,7 @@ namespace TenmoClient
                 Console.WriteLine("4: Send TE bucks");
                 //Console.WriteLine("5: Request TE bucks");
                 Console.WriteLine("6: View list of users");
-               // Console.WriteLine("7: Log in as different user");
+                // Console.WriteLine("7: Log in as different user");
                 Console.WriteLine("0: Exit");
                 Console.WriteLine("---------");
                 Console.Write("Please choose an option: ");
@@ -103,15 +103,12 @@ namespace TenmoClient
                         Console.WriteLine();
                         Console.WriteLine("Your current account balance is: $" + balance);
                         Console.ReadLine();
-                       
+
                     }
                     else if (menuSelection == 2)
                     {
                         Console.WriteLine();
 
-
-
-                        Console.WriteLine();
                     }
                     else if (menuSelection == 3)
                     {
@@ -119,7 +116,20 @@ namespace TenmoClient
                     }
                     else if (menuSelection == 4)
                     {
+                        List<API_User> userList = accountService.GetUsers();
                         Console.WriteLine("Send TE Bucks");
+                        Console.WriteLine("-------------------------------------------");
+                        Console.WriteLine("Users");
+                        Console.WriteLine("ID".PadRight(10) + "Name");
+                        Console.WriteLine("-------------------------------------------");
+
+
+                        foreach (API_User person in userList)
+                        {
+                            Console.WriteLine(person.UserId.ToString().PadRight(10) + person.Username);
+
+                        }
+
                         Console.Write("Enter ID of user you are sending to (Enter 0 to cancel): ");
                         string userID = Console.ReadLine();
                         int.Parse(userID);

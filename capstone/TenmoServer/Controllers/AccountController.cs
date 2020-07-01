@@ -67,6 +67,8 @@ namespace TenmoServer.Controllers
         public List<User> GetUsers()
         {
             List<User> users = userDAO.GetUsers();
+
+
             return users;
         }
 
