@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TenmoServer.Models;
+using TenmoServer.DAO;
 
 namespace TenmoServer.Controllers
 {
@@ -13,11 +15,16 @@ namespace TenmoServer.Controllers
     [Authorize]
     public class AccountController : ControllerBase
     {
-        [HttpGet]
-        public decimal GetBalance()
-        {
+        private IUserAccountDAO userAccountDAO;
+        UserAccountDAO access = new UserAccountDAO();
 
-            return 0;
+        [Authorize]
+        [HttpGet("balance")]
+        public decimal GetBalance(string userId)
+        {
+            decimal balance = access.ReturnBalance();
+
+            return balance;
         }
     }
 }

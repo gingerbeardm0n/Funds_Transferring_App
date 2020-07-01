@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TenmoClient.Data;
-using TenmoClient.AccountService;
+
 
 
 
@@ -10,7 +10,6 @@ namespace TenmoClient
     public class ConsoleService
     {
         private static readonly AuthService authService = new AuthService();
-        UserAccountDAO userAccountAccess = new UserAccountDAO();
         private static readonly AccountService accountService = new AccountService(); 
         
         public void Run()
@@ -100,14 +99,9 @@ namespace TenmoClient
                     }
                     else if (menuSelection == 1)
                     {
-                        //API_User user = Get
-                        
-                        API_User user = accountService.GetBalance(user);
-                        if (user != null)
-                        {
-                            //UserService.SetLogin(user);
-                            //MenuSelection();
-                        }
+                        decimal balance = accountService.GetBalance();
+                        Console.WriteLine(balance);
+                       
                     }
                     else if (menuSelection == 2)
                     {
