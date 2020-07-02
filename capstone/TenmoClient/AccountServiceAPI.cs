@@ -71,12 +71,12 @@ namespace TenmoClient
             }
         }
 
-        public bool UpdateBalance(decimal newBalance)
+        public TransferData UpdateBalance(TransferData transferData)
         {
             RestClient client = new RestClient();
             RestRequest request = new RestRequest(API_BASE_URL + "updateBalance");
-            request.AddJsonBody(newBalance);
-            IRestResponse<bool> response = client.Put<bool>(request);
+            request.AddJsonBody(transferData);
+            IRestResponse<TransferData> response = client.Put<TransferData>(request);
 
             if (response.ResponseStatus != ResponseStatus.Completed)
             {

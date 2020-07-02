@@ -83,7 +83,7 @@ namespace TenmoServer.DAO
         }
 
 
-        public bool AddTransfer(Transfer transfer)
+        public bool AddTransfer(TransferLog transfer)
         {
             try
             {
@@ -121,11 +121,11 @@ namespace TenmoServer.DAO
 
 
 
-        public List<Transfer> DisplayTransfers()
+        public List<TransferLog> DisplayTransfers()
         {
-            List<Transfer> TransferHistory = new List<Transfer>();
+            List<TransferLog> TransferHistory = new List<TransferLog>();
             ReturnUser access = new ReturnUser();
-            Transfer transferAccess = new Transfer();
+            TransferLog transferAccess = new TransferLog();
 
             try
             {
