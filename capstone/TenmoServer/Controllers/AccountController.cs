@@ -24,24 +24,12 @@ namespace TenmoServer.Controllers
             this.userDAO = userDAO;
             this.accountDAO = accountDAO;
         }
-
         
-
         [Authorize]
         [HttpGet("balance")]
         public decimal GetMyBalance()
         {
-            //var user = User.Identity.Name;
-            //int userID = -1;
-
-            //foreach (var claim in User.Claims)
-            //{
-            //    if (claim.Type == "sub")
-            //    {
-            //        userID = int.Parse(claim.Value);
-            //    }
-            //}
-
+            
             int userID = GetMyUserID();
 
             decimal balance = accountDAO.GetMyBalance(userID);
@@ -53,13 +41,10 @@ namespace TenmoServer.Controllers
         [HttpPost("transfer")]
         public ActionResult UpdateBalance(TransferData transferData)
         {
-           
             int userID = GetMyUserID();
 
             decimal myBalance = accountDAO.GetMyBalance(userID);
-
-            //decimal userBalance = accountDAO.GetUserBalance(transferData);
-
+            
             if (myBalance >= transferData.TransferAmount)
             {
                 bool sender = accountDAO.UpdateMyBalance(transferData, userID);
@@ -73,8 +58,7 @@ namespace TenmoServer.Controllers
             }
             return BadRequest();
         }
-
-
+        
         [Authorize]
         [HttpPost("insert")]
         public ActionResult CreateTransfer(TransferLog transfer)
@@ -96,8 +80,7 @@ namespace TenmoServer.Controllers
         public List<User> GetUsers()
         {
             List<User> users = userDAO.GetUsers();
-
-
+            
             return users;
         }
 

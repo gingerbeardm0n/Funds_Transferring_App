@@ -77,9 +77,7 @@ namespace TenmoServer.DAO
         public bool UpdateMyBalance(TransferData transferData, int userID)
         {
             
-            
             decimal myBalance = GetMyBalance(userID);
-
             decimal newBalance = myBalance - transferData.TransferAmount;
 
             try
@@ -114,7 +112,6 @@ namespace TenmoServer.DAO
         public bool UpdateUserBalance(TransferData transferData)
         {
             decimal userBalance = GetUserBalance(transferData);
-
             decimal newBalance = userBalance + transferData.TransferAmount;
 
             try
