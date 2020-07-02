@@ -9,7 +9,8 @@ namespace TenmoClient.Data
     /// </summary>
     public class TransferData
     {
-        public int UserIDToIncrease { get; set; }
+        public int AccountIDToIncrease { get; set; }
         public decimal TransferAmount { get; set; }
+       
     }
 }

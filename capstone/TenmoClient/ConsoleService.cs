@@ -99,7 +99,7 @@ namespace TenmoClient
                     }
                     else if (menuSelection == 1)
                     {
-                        decimal balance = accountService.GetBalance();
+                        decimal balance = accountService.GetMyBalance();
                         Console.WriteLine();
                         Console.WriteLine("Your current account balance is: $" + balance);
                         Console.ReadLine();
@@ -132,15 +132,15 @@ namespace TenmoClient
 
                         Console.Write("Enter ID of user you are sending to (Enter 0 to cancel): ");
                         string userID = Console.ReadLine();
-                        int userIDToIncrease= int.Parse(userID);
+                        int accountIDToIncrease = int.Parse(userID);
 
                         Console.Write("Enter amount: $");
                         string inputTransferAmount = Console.ReadLine();
                         decimal transferAmount = decimal.Parse(inputTransferAmount);
-
+                        
                         TransferData transferData = new TransferData()
                         {
-                            UserIDToIncrease = userIDToIncrease,
+                            AccountIDToIncrease = accountIDToIncrease,
                             TransferAmount = transferAmount
                         };
 
@@ -148,7 +148,7 @@ namespace TenmoClient
                         if(transferDataFromServer == null)
                         {
                             Console.WriteLine();
-                            Console.WriteLine("\t Error has occured, balance has not been updated!");
+                            Console.WriteLine("\t Error has occured, balance has not been updated! Please review account details and try again.");
                         }
                         else
                         {

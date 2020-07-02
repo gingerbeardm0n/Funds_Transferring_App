@@ -20,10 +20,10 @@ namespace TenmoServer.DAO
             connectionString = dbConnectionString;
         }
 
-        public decimal GetBalance(int userID)
+        public decimal GetMyBalance(int userID)
         {
             ReturnUser access = new ReturnUser();
-            decimal balance = 0;
+            decimal myBalance = 0;
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -35,10 +35,34 @@ namespace TenmoServer.DAO
 
                     if (reader.Read())
                     {
-                        balance = Convert.ToDecimal(reader["balance"]);
+                        myBalance = Convert.ToDecimal(reader["balance"]);
                     }
 
-                    return balance;
+                    return myBalance;
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw;
+            }
+        }
+        public decimal GetUserBalance(TransferData transferData)
+        {
+            decimal userBalance = 0;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("SELECT balance FROM accounts WHERE account_id = @account_id;", conn);
+                    cmd.Parameters.AddWithValue("@account_id", transferData.AccountIDToIncrease);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        userBalance = Convert.ToDecimal(reader["balance"]);
+                    }
+                    return userBalance;
                 }
             }
             catch (SqlException ex)
@@ -49,17 +73,19 @@ namespace TenmoServer.DAO
 
         public bool UpdateBalance(TransferData transferData)
         {
+            decimal userBalance = GetUserBalance(transferData);
+
+            decimal newBalance = userBalance + transferData.TransferAmount;
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand("UPDATE accounts SET balance = @newBalance WHERE account_id = @account_id;", conn);
-                    cmd.Parameters.AddWithValue("@newBalance", transferData.TransferAmount);
-                    cmd.Parameters.AddWithValue("@account_id", transferData.UserIDToIncrease);
+                    cmd.Parameters.AddWithValue("@newBalance", newBalance);
+                    cmd.Parameters.AddWithValue("@account_id", transferData.AccountIDToIncrease);
                     
-                    
-
                     int count = cmd.ExecuteNonQuery();
 
                     if (count == 1)
@@ -70,14 +96,14 @@ namespace TenmoServer.DAO
                     {
                         return false;
                     }
-                    
+
                 }
             }
-            catch(SqlException ex)
+            catch (SqlException ex)
             {
                 throw;
             }
-            
+
         }
 
 

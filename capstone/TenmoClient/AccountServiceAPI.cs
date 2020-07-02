@@ -15,7 +15,7 @@ namespace TenmoClient
         ConsoleService CSAccess = new ConsoleService();
         API_User api_User = new API_User();
 
-        public decimal GetBalance()
+        public decimal GetMyBalance()
         {
             RestRequest request = new RestRequest(API_BASE_URL + "balance");//changed from "get_balance" to "balance"
             //get's don't have bodies
@@ -73,39 +73,34 @@ namespace TenmoClient
 
         public TransferData UpdateBalance(TransferData transferData)
         {
-            decimal currentBalance = GetBalance();
-            decimal newBalance = transferData.TransferAmount + currentBalance;
+            decimal currentBalance = GetMyBalance();//todo ASK JOHN refactor to not have to call this method in both the AccountAPI and the ConsoleService
+            
+            RestRequest request = new RestRequest(API_BASE_URL + "transfer");
+            request.AddJsonBody(transferData);
+            IRestResponse<TransferData> response = client.Post<TransferData>(request);
 
-            if (currentBalance >= transferData.TransferAmount)
+            if (response.ResponseStatus != ResponseStatus.Completed)
             {
+                throw new Exception("An error occurred communicating with the server.");
 
-                RestRequest request = new RestRequest(API_BASE_URL + "updateBalance");
-                request.AddJsonBody(transferData);
-                IRestResponse<TransferData> response = client.Post<TransferData>(request);
-
-                if (response.ResponseStatus != ResponseStatus.Completed)
+            }
+            else if (!response.IsSuccessful)
+            {
+                if (!string.IsNullOrWhiteSpace(response.Data.ToString()))
                 {
-                    throw new Exception("An error occurred communicating with the server.");
-
-                }
-                else if (!response.IsSuccessful)
-                {
-                    if (!string.IsNullOrWhiteSpace(response.Data.ToString()))
-                    {
-                        throw new Exception("An error message was received: " + response.Data);
-                    }
-                    else
-                    {
-                        throw new Exception("An error response was received from the server. The status code is " + (int)response.StatusCode);
-                    }
+                    throw new Exception("An error message was received: " + response.Data);
                 }
                 else
                 {
-
-                    return response.Data;
+                    throw new Exception("An error response was received from the server. The status code is " + (int)response.StatusCode);
                 }
             }
-            return null;
+            else
+            {
+
+                return response.Data;
+            }
+            
         }
 
 
