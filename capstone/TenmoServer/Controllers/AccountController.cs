@@ -47,6 +47,27 @@ namespace TenmoServer.Controllers
         }
 
         [Authorize]
+        [HttpPut("updateBalance")]
+        public bool UpdateBalance(decimal newBalance)
+        {
+            var user = User.Identity.Name;
+            int userID = -1;
+
+            foreach (var claim in User.Claims)
+            {
+                if (claim.Type == "sub")
+                {
+                    userID = int.Parse(claim.Value);
+                }
+            }
+
+            accountDAO.UpdateBalance(userID, newBalance);
+
+            return true;
+        }
+
+
+        [Authorize]
         [HttpPost("transfer")]
         public ActionResult CreateTransfer(Transfer transfer)
         {

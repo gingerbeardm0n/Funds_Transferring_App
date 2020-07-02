@@ -51,6 +51,37 @@ namespace TenmoServer.DAO
             }
         }
 
+        public bool UpdateBalance(int accountID, decimal newBalance)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("UPDATE accounts SET balance = '@newBalance' WHERE account_id = @account_id;", conn);
+                    cmd.Parameters.AddWithValue("@newBalance", newBalance);
+                    cmd.Parameters.AddWithValue("@account_id", accountID);
+
+                    int count = cmd.ExecuteNonQuery();
+
+                    if (count == 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                    
+                }
+            }
+            catch(SqlException ex)
+            {
+                throw;
+            }
+            
+        }
+
 
         public bool AddTransfer(Transfer transfer)
         {
@@ -79,7 +110,7 @@ namespace TenmoServer.DAO
                     {
                         return false;
                     }
-                    
+
                 }
             }
             catch (SqlException ex)
