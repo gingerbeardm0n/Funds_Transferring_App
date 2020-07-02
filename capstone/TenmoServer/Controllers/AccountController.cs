@@ -79,7 +79,7 @@ namespace TenmoServer.Controllers
 
 
         [Authorize]
-        [HttpPost("transfer")]
+        [HttpPost("insert")]
         public ActionResult CreateTransfer(TransferLog transfer)
         {
             bool result = accountDAO.AddTransfer(transfer);
@@ -103,18 +103,6 @@ namespace TenmoServer.Controllers
 
             return users;
         }
-
-
-
+        
     }
 }
-//var user = User.Identity.Name;
-//int userID = -1;
-
-//            foreach (var claim in User.Claims)
-//            {
-//                if (claim.Type == "sub")
-//                {
-//                    userID = int.Parse(claim.Value);
-//                }
-//            }

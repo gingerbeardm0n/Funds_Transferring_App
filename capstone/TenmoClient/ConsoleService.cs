@@ -45,7 +45,7 @@ namespace TenmoClient
 
                     else if (loginRegister == 2)
                     {
-                        LoginUser registerUser = PromptForLogin();//JNB added Data to beginning of line
+                        LoginUser registerUser = PromptForLogin();
                         bool isRegistered = authService.Register(registerUser);
                         if (isRegistered)
                         {

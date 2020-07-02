@@ -73,7 +73,7 @@ namespace TenmoClient
 
         public TransferData UpdateBalance(TransferData transferData)
         {
-            decimal currentBalance = GetMyBalance();//todo ASK JOHN refactor to not have to call this method in both the AccountAPI and the ConsoleService
+            
             
             RestRequest request = new RestRequest(API_BASE_URL + "transfer");
             request.AddJsonBody(transferData);
