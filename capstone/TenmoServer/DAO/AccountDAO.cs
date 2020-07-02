@@ -4,9 +4,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using TenmoServer.Models;
-
-
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Core;
@@ -26,7 +23,6 @@ namespace TenmoServer.DAO
         public decimal GetBalance(int userID)
         {
             ReturnUser access = new ReturnUser();
-            //access.UserId = 1; --> hardcoded to help test
             decimal balance = 0;
             try
             {
@@ -59,7 +55,7 @@ namespace TenmoServer.DAO
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand("UPDATE accounts SET balance = @newBalance WHERE account_id = @account_id;", conn);
-                    cmd.Parameters.AddWithValue("@newBalance", transferData.AmountToIncrease);
+                    cmd.Parameters.AddWithValue("@newBalance", transferData.TransferAmount);
                     cmd.Parameters.AddWithValue("@account_id", transferData.UserIDToIncrease);
                     
                     

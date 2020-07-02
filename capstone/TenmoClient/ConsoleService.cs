@@ -135,18 +135,19 @@ namespace TenmoClient
                         int userIDToIncrease= int.Parse(userID);
 
                         Console.Write("Enter amount: $");
-                        string transferAmount = Console.ReadLine();
-                        decimal amountToIncrease = decimal.Parse(transferAmount);
+                        string inputTransferAmount = Console.ReadLine();
+                        decimal transferAmount = decimal.Parse(inputTransferAmount);
 
                         TransferData transferData = new TransferData()
                         {
                             UserIDToIncrease = userIDToIncrease,
-                            AmountToIncrease = amountToIncrease
+                            TransferAmount = transferAmount
                         };
 
                         TransferData transferDataFromServer = accountService.UpdateBalance(transferData);
                         if(transferDataFromServer == null)
                         {
+                            Console.WriteLine();
                             Console.WriteLine("\t Error has occured, balance has not been updated!");
                         }
                         else

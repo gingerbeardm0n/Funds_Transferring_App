@@ -12,6 +12,7 @@ namespace TenmoClient
         private readonly static string API_BASE_URL = "https://localhost:44315/account/";
         // Wnat to use the restlient defined in the parent class    -   private readonly IRestClient client = new RestClient();
 
+        ConsoleService CSAccess = new ConsoleService();
         API_User api_User = new API_User();
 
         public decimal GetBalance()
@@ -72,30 +73,39 @@ namespace TenmoClient
 
         public TransferData UpdateBalance(TransferData transferData)
         {
-            RestRequest request = new RestRequest(API_BASE_URL + "updateBalance");
-            request.AddJsonBody(transferData);
-            IRestResponse<TransferData> response = client.Post<TransferData>(request);
+            decimal currentBalance = GetBalance();
+            decimal newBalance = transferData.TransferAmount + currentBalance;
 
-            if (response.ResponseStatus != ResponseStatus.Completed)
+            if (currentBalance >= transferData.TransferAmount)
             {
-                throw new Exception("An error occurred communicating with the server.");
 
-            }
-            else if (!response.IsSuccessful)
-            {
-                if (!string.IsNullOrWhiteSpace(response.Data.ToString()))
+                RestRequest request = new RestRequest(API_BASE_URL + "updateBalance");
+                request.AddJsonBody(transferData);
+                IRestResponse<TransferData> response = client.Post<TransferData>(request);
+
+                if (response.ResponseStatus != ResponseStatus.Completed)
                 {
-                    throw new Exception("An error message was received: " + response.Data);
+                    throw new Exception("An error occurred communicating with the server.");
+
+                }
+                else if (!response.IsSuccessful)
+                {
+                    if (!string.IsNullOrWhiteSpace(response.Data.ToString()))
+                    {
+                        throw new Exception("An error message was received: " + response.Data);
+                    }
+                    else
+                    {
+                        throw new Exception("An error response was received from the server. The status code is " + (int)response.StatusCode);
+                    }
                 }
                 else
                 {
-                    throw new Exception("An error response was received from the server. The status code is " + (int)response.StatusCode);
+
+                    return response.Data;
                 }
             }
-            else
-            {
-                return response.Data;
-            }
+            return null;
         }
 
 

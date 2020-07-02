@@ -11,6 +11,6 @@ namespace TenmoServer.Models
     public class TransferData
     {
         public int UserIDToIncrease { get; set; }
-        public decimal AmountToIncrease { get; set; }
+        public decimal TransferAmount { get; set; }
     }
 }
