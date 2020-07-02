@@ -65,15 +65,11 @@ namespace TenmoServer.Controllers
 
             //decimal userBalance = accountDAO.GetUserBalance(transferData);
 
+            bool sender = accountDAO.UpdateMyBalance(transferData);
+            bool receiver = accountDAO.UpdateUserBalance(transferData);
             if (myBalance >= transferData.TransferAmount)
             {
-                bool sender = accountDAO.UpdateMyBalance(transferData);
-                bool receiver = accountDAO.UpdateUserBalance(transferData);
-
-                if (sender && receiver)
-                {
-                    return Created("", transferData);
-                }
+                return Created("", transferData);
             }
             return BadRequest();
         }
@@ -104,6 +100,6 @@ namespace TenmoServer.Controllers
 
             return users;
         }
-        
+
     }
 }
