@@ -88,7 +88,7 @@ namespace TenmoClient
             {
                 if (!string.IsNullOrWhiteSpace(response.Data.ToString()))
                 {
-                    throw new Exception("An error message was received: " + response.Data);
+                    throw new Exception("You have exceed TE Bucks in your account. Please again.");
                 }
                 else
                 {

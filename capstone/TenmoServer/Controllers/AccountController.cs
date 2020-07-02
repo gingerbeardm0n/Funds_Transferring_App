@@ -29,7 +29,7 @@ namespace TenmoServer.Controllers
         [HttpGet("balance")]
         public decimal GetMyBalance()
         {
-            
+
             int userID = GetMyUserID();
 
             decimal balance = accountDAO.GetMyBalance(userID);
@@ -42,13 +42,11 @@ namespace TenmoServer.Controllers
         public ActionResult UpdateBalance(TransferData transferData)
         {
             int userID = GetMyUserID();
-
             decimal myBalance = accountDAO.GetMyBalance(userID);
-            
+
             if (myBalance >= transferData.TransferAmount)
             {
                 bool sender = accountDAO.UpdateMyBalance(transferData, userID);
-
                 bool receiver = accountDAO.UpdateUserBalance(transferData);
 
                 if (sender == true && receiver == true)
