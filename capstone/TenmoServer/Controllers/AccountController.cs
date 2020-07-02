@@ -67,9 +67,10 @@ namespace TenmoServer.Controllers
 
             if (myBalance >= transferData.TransferAmount)
             {
-                bool result = accountDAO.UpdateBalance(transferData);
+                bool sender = accountDAO.UpdateMyBalance(transferData);
+                bool receiver = accountDAO.UpdateUserBalance(transferData);
 
-                if (result)
+                if (sender && receiver)
                 {
                     return Created("", transferData);
                 }
