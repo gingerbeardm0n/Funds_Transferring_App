@@ -7,7 +7,7 @@ namespace TenmoClient.Data
     /// <summary>
     /// Model to provide information about UserID and Amount when sending TE Bucks
     /// </summary>
-    class TransferData
+    public class TransferData
     {
         public int UserIDToIncrease { get; set; }
         public decimal AmountToIncrease { get; set; }

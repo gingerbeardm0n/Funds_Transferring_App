@@ -47,14 +47,20 @@ namespace TenmoServer.Controllers
         }
 
         [Authorize]
-        [HttpPut("updateBalance")]
-        public ActionResult<TransferData> UpdateBalance(TransferData transferData)
+        [HttpPost("updateBalance")]
+        public ActionResult UpdateBalance(TransferData transferData)
         {
+            bool result = accountDAO.UpdateBalance(transferData);
+
+            if (result)
+            {
+                return Created("", transferData);
+            }
+            else
+            {
+                return BadRequest();
+            }
             
-
-            accountDAO.UpdateBalance(userID, newBalance);
-
-            return true;
         }
 
 

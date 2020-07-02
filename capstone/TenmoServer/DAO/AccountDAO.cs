@@ -51,16 +51,18 @@ namespace TenmoServer.DAO
             }
         }
 
-        public bool UpdateBalance(int accountID, decimal newBalance)
+        public bool UpdateBalance(TransferData transferData)
         {
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand("UPDATE accounts SET balance = '@newBalance' WHERE account_id = @account_id;", conn);
-                    cmd.Parameters.AddWithValue("@newBalance", newBalance);
-                    cmd.Parameters.AddWithValue("@account_id", accountID);
+                    SqlCommand cmd = new SqlCommand("UPDATE accounts SET balance = @newBalance WHERE account_id = @account_id;", conn);
+                    cmd.Parameters.AddWithValue("@newBalance", transferData.AmountToIncrease);
+                    cmd.Parameters.AddWithValue("@account_id", transferData.UserIDToIncrease);
+                    
+                    
 
                     int count = cmd.ExecuteNonQuery();
 

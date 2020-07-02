@@ -12,6 +12,6 @@ namespace TenmoServer.DAO
 
         bool AddTransfer(TransferLog transfer);
 
-        bool UpdateBalance(int accountID, decimal balanceIncrease);
+        bool UpdateBalance(TransferData transferData);
     }
 }

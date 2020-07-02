@@ -19,10 +19,10 @@ namespace TenmoClient
             RestRequest request = new RestRequest(API_BASE_URL + "balance");//changed from "get_balance" to "balance"
             //get's don't have bodies
             IRestResponse<decimal> response = client.Get<decimal>(request);
+
             if (response.ResponseStatus != ResponseStatus.Completed)
             {
                 throw new Exception("An error occurred communicating with the server.");
-
             }
             else if (!response.IsSuccessful)
             {
@@ -34,7 +34,6 @@ namespace TenmoClient
                 {
                     throw new Exception("An error response was received from the server. The status code is " + (int)response.StatusCode);
                 }
-
             }
             else
             {
@@ -73,10 +72,9 @@ namespace TenmoClient
 
         public TransferData UpdateBalance(TransferData transferData)
         {
-            RestClient client = new RestClient();
             RestRequest request = new RestRequest(API_BASE_URL + "updateBalance");
             request.AddJsonBody(transferData);
-            IRestResponse<TransferData> response = client.Put<TransferData>(request);
+            IRestResponse<TransferData> response = client.Post<TransferData>(request);
 
             if (response.ResponseStatus != ResponseStatus.Completed)
             {
