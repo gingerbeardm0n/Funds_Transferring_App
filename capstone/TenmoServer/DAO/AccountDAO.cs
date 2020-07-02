@@ -8,11 +8,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Core;
 using System.Web;
+using TenmoServer.Controllers;
 
 namespace TenmoServer.DAO
 {
     public class AccountDAO : IAccountDAO
     {
+        //AccountController accountController = new AccountController();
+
         private string connectionString;
 
         public AccountDAO(string dbConnectionString)
@@ -71,10 +74,10 @@ namespace TenmoServer.DAO
             }
         }
 
-        public bool UpdateMyBalance(TransferData transferData)
+        public bool UpdateMyBalance(TransferData transferData, int userID)
         {
-            decimal userBalance = GetUserBalance(transferData);
-            decimal newBalance = userBalance - transferData.TransferAmount;
+            decimal myBalance = GetMyBalance(userID);
+            decimal newBalance = myBalance - transferData.TransferAmount;
 
             try
             {
@@ -83,7 +86,7 @@ namespace TenmoServer.DAO
                     conn.Open();
                     SqlCommand cmd = new SqlCommand("UPDATE accounts SET balance = @newBalance WHERE account_id = @account_id;", conn);
                     cmd.Parameters.AddWithValue("@newBalance", newBalance);
-                    cmd.Parameters.AddWithValue("@account_id", transferData.AccountIDToIncrease);
+                    cmd.Parameters.AddWithValue("@account_id", userID);
                     
                     int count = cmd.ExecuteNonQuery();
 
@@ -136,7 +139,6 @@ namespace TenmoServer.DAO
             {
                 throw;
             }
-
         }
 
         public bool AddTransfer(TransferLog transfer)
@@ -200,8 +202,6 @@ namespace TenmoServer.DAO
                 throw;
             }
         }
-
-
     }
 
 }

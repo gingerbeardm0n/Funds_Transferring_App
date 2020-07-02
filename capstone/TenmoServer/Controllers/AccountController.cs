@@ -25,21 +25,13 @@ namespace TenmoServer.Controllers
             this.accountDAO = accountDAO;
         }
 
+        
 
         [Authorize]
         [HttpGet("balance")]
         public decimal GetMyBalance()
         {
-            var user = User.Identity.Name;
-            int userID = -1;
-
-            foreach (var claim in User.Claims)
-            {
-                if (claim.Type == "sub")
-                {
-                    userID = int.Parse(claim.Value);
-                }
-            }
+            int userID = GetMyUserID();
 
             decimal balance = accountDAO.GetMyBalance(userID);
 
@@ -50,26 +42,18 @@ namespace TenmoServer.Controllers
         [HttpPost("transfer")]
         public ActionResult UpdateBalance(TransferData transferData)
         {
-            var user = User.Identity.Name;
-            int userID = -1;
-
-            foreach (var claim in User.Claims)
-            {
-                if (claim.Type == "sub")
-                {
-                    userID = int.Parse(claim.Value);
-                }
-            }
-
+            int userID = GetMyUserID();
             decimal myBalance = accountDAO.GetMyBalance(userID);
 
-            //decimal userBalance = accountDAO.GetUserBalance(transferData);
-
-            bool sender = accountDAO.UpdateMyBalance(transferData);
-            bool receiver = accountDAO.UpdateUserBalance(transferData);
             if (myBalance >= transferData.TransferAmount)
             {
-                return Created("", transferData);
+                bool sender = accountDAO.UpdateMyBalance(transferData, userID);
+                bool receiver = accountDAO.UpdateUserBalance(transferData);
+
+                if (sender == true && receiver == true)
+                {
+                    return Created("", transferData);
+                }
             }
             return BadRequest();
         }
@@ -96,10 +80,23 @@ namespace TenmoServer.Controllers
         public List<User> GetUsers()
         {
             List<User> users = userDAO.GetUsers();
-
-
+            
             return users;
         }
 
+        public int GetMyUserID()
+        {
+            var user = User.Identity.Name;
+            int userID = -1;
+
+            foreach (var claim in User.Claims)
+            {
+                if (claim.Type == "sub")
+                {
+                    userID = int.Parse(claim.Value);
+                }
+            }
+            return userID;
+        }
     }
 }
