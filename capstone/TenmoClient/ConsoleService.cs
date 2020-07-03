@@ -116,28 +116,16 @@ namespace TenmoClient
                     }
                     else if (menuSelection == 4)
                     {
-                        List<API_User> userList = accountService.GetUsers();
-                        Console.WriteLine("Send TE Bucks");
-                        Console.WriteLine("-------------------------------------------");
-                        Console.WriteLine("Users");
-                        Console.WriteLine("ID".PadRight(10) + "Name");
-                        Console.WriteLine("-------------------------------------------");
-
-
-                        foreach (API_User person in userList)
+                        int accountIDToIncrease = -1;
+                        while(accountIDToIncrease == -1)
                         {
-                            Console.WriteLine(person.UserId.ToString().PadRight(10) + person.Username);
-
+                            accountIDToIncrease = PromptForTransferID();
                         }
-
-                        Console.Write("Enter ID of user you are sending to (Enter 0 to cancel): ");
-                        string userID = Console.ReadLine();
-                        int accountIDToIncrease = int.Parse(userID);
-
+                        
                         Console.Write("Enter amount: $");
                         string inputTransferAmount = Console.ReadLine();
                         decimal transferAmount = decimal.Parse(inputTransferAmount);
-                        
+
                         TransferData transferData = new TransferData()
                         {
                             AccountIDToIncrease = accountIDToIncrease,
@@ -145,7 +133,7 @@ namespace TenmoClient
                         };
 
                         TransferData transferDataFromServer = accountService.UpdateBalance(transferData);
-                        if(transferDataFromServer == null)
+                        if (transferDataFromServer == null)
                         {
                             Console.WriteLine();
                             Console.WriteLine("\t Error has occured, balance has not been updated! Please review account details and try again.");
@@ -155,9 +143,7 @@ namespace TenmoClient
                             Console.WriteLine("\t Balance Updated!");
                         }
                         Console.WriteLine(transferDataFromServer);
-
-
-
+                        
                     }
                     else if (menuSelection == 5)
                     {
@@ -178,7 +164,6 @@ namespace TenmoClient
                         Console.WriteLine("Goodbye!");
                         Environment.Exit(0);
                     }
-
                     else
                     {
                         Console.WriteLine("Please try again");
@@ -192,22 +177,45 @@ namespace TenmoClient
                 }
             }
         }
-
-        public int PromptForTransferID(string action)
+        
+        public int PromptForTransferID()
         {
+            PromptForIDHeaderAndDisplayAvailableUsers();
+
             Console.WriteLine("");
-            Console.Write("Please enter transfer ID to " + action + " (0 to cancel): ");
-            if (!int.TryParse(Console.ReadLine(), out int auctionId))
+            Console.Write("Please enter userID of person you want to transfer TE bucks to (0 to cancel): ");
+            if (!int.TryParse(Console.ReadLine(), out int transferID))
             {
-                Console.WriteLine("Invalid input. Only input a number.");
-                return 0;
+                Console.WriteLine("\t Invalid input. Only input a number.");
+                return -1;
             }
             else
             {
-                return auctionId;
+                List<API_User> testList = accountService.GetUsers();
+                if (transferID > testList.Count)
+                {
+                    Console.WriteLine("\t Please enter a valid userID!");
+                    return -1;
+                }
+                return transferID;
             }
         }
 
+        public void PromptForIDHeaderAndDisplayAvailableUsers()
+        {
+            
+            List<API_User> userList = accountService.GetUsers();
+            Console.WriteLine("Send TE Bucks");
+            Console.WriteLine("-------------------------------------------");
+            Console.WriteLine("Users");
+            Console.WriteLine("ID".PadRight(10) + "Name");
+            Console.WriteLine("-------------------------------------------");
+            
+            foreach (API_User person in userList)
+            {
+                Console.WriteLine(person.UserId.ToString().PadRight(10) + person.Username);
+            }
+        }
         public LoginUser PromptForLogin()
         {
             Console.Write("Username: ");
@@ -252,10 +260,6 @@ namespace TenmoClient
             Console.WriteLine("");
             return pass;
         }
-
-        //private List<Transfers> TransferList()
-        //{
-
-        //}
+        
     }
 }
