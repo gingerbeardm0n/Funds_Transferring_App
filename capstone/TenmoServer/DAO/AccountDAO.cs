@@ -14,7 +14,6 @@ namespace TenmoServer.DAO
 {
     public class AccountDAO : IAccountDAO
     {
-        //AccountController accountController = new AccountController();
 
         private string connectionString;
 
@@ -88,7 +87,7 @@ namespace TenmoServer.DAO
                     SqlCommand cmd = new SqlCommand("UPDATE accounts SET balance = @newBalance WHERE account_id = @account_id;", conn);
                     cmd.Parameters.AddWithValue("@newBalance", newBalance);
                     cmd.Parameters.AddWithValue("@account_id", userID);
-                    
+
                     int count = cmd.ExecuteNonQuery();
 
                     if (count == 1)
@@ -141,7 +140,44 @@ namespace TenmoServer.DAO
             }
         }
 
-        public bool AddTransfer(TransferLog transferlog)
+        public TransferLogEntry DisplayMyTransfers(int userID)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM transfers WHERE account_from = @userID OR account_to = @userID; ", conn);
+                    cmd.Parameters.AddWithValue("@userID", userID);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        TransferLogEntry trasferDetail = new TransferLogEntry()
+                        {
+                            TransferId = Convert.ToInt32(reader["transfer_id"]),
+                            TransferTypeId = Convert.ToInt32(reader["transfer_type_id"]),
+                            TransferStatusId = Convert.ToInt32(reader["transfer_status_id"]),
+                            AccountFrom = Convert.ToInt32(reader["acount_from"]),
+                            AccountTo = Convert.ToInt32(reader["account_to"]),
+                            Amount = Convert.ToDecimal(reader["amount"])
+                        };
+
+                        return trasferDetail;
+                    }
+
+                    
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw;
+            }
+
+            return null;
+        }
+
+        public bool AddTransfer(TransferLogEntry transferlog)
         {
             try
             {
@@ -151,11 +187,11 @@ namespace TenmoServer.DAO
 
                     SqlCommand cmd = new SqlCommand(
                         "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (@transfer_type_id, @transfer_status_id, @account_from, @account_to, @amount);", conn);
-                    cmd.Parameters.AddWithValue("@transfer_type_id", transferlog.transferTypeId);
-                    cmd.Parameters.AddWithValue("@transfer_status_id", transferlog.transferStatusId);
-                    cmd.Parameters.AddWithValue("@account_from", transferlog.accountFrom);
-                    cmd.Parameters.AddWithValue("@account_to", transferlog.accountTo);
-                    cmd.Parameters.AddWithValue("@amount", transferlog.amount);
+                    cmd.Parameters.AddWithValue("@transfer_type_id", transferlog.TransferTypeId);
+                    cmd.Parameters.AddWithValue("@transfer_status_id", transferlog.TransferStatusId);
+                    cmd.Parameters.AddWithValue("@account_from", transferlog.AccountFrom);
+                    cmd.Parameters.AddWithValue("@account_to", transferlog.AccountTo);
+                    cmd.Parameters.AddWithValue("@amount", transferlog.Amount);
 
                     int count = cmd.ExecuteNonQuery();
 
@@ -176,31 +212,29 @@ namespace TenmoServer.DAO
             }
         }
 
+        //public List<TransferLog> DisplayTransfers()
+        //{
+        //    List<TransferLog> TransferHistory = new List<TransferLog>();
+        //    ReturnUser access = new ReturnUser();
+        //    TransferLog transferAccess = new TransferLog();
 
+        //    try
+        //    {
+        //        using (SqlConnection conn = new SqlConnection(connectionString))
+        //        {
+        //            conn.Open();
+        //            SqlCommand cmd = new SqlCommand("SELECT user_id, username, password_hash, salt FROM users", conn);
+        //            cmd.Parameters.AddWithValue("@", access);
+        //            SqlDataReader reader = cmd.ExecuteReader();
 
-        public List<TransferLog> DisplayTransfers()
-        {
-            List<TransferLog> TransferHistory = new List<TransferLog>();
-            ReturnUser access = new ReturnUser();
-            TransferLog transferAccess = new TransferLog();
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand("SELECT user_id, username, password_hash, salt FROM users", conn);
-                    cmd.Parameters.AddWithValue("@", access);
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    return TransferHistory;
-                }
-            }
-            catch (SqlException ex)
-            {
-                throw;
-            }
-        }
+        //            return TransferHistory;
+        //        }
+        //    }
+        //    catch (SqlException ex)
+        //    {
+        //        throw;
+        //    }
+        //}
     }
 
 }

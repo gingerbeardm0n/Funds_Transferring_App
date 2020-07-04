@@ -18,7 +18,7 @@ namespace TenmoServer.Controllers
 
         private readonly IAccountDAO accountDAO;
         private readonly IUserDAO userDAO;
-        public TransferLog transferlog = new TransferLog();
+        public TransferLogEntry transferlog = new TransferLogEntry();
 
         public AccountController(IUserDAO userDAO, IAccountDAO accountDAO)
         {
@@ -66,7 +66,7 @@ namespace TenmoServer.Controllers
 
         [Authorize]
         [HttpPost("insert")]
-        public ActionResult CreateTransfer(TransferLog transfer)
+        public ActionResult CreateTransfer(TransferLogEntry transfer)
         {
             bool result = accountDAO.AddTransfer(transfer);
 
@@ -89,6 +89,19 @@ namespace TenmoServer.Controllers
             return users;
         }
 
+        [Authorize]
+        [HttpGet("tansferHistory")]
+        public decimal DisplayMyTransfers()
+        {
+
+            int userID = GetMyUserID();
+
+            decimal balance = accountDAO.GetMyBalance(userID);
+
+            return balance;
+        }
+
+
         public int GetMyUserID()
         {
             var user = User.Identity.Name;
@@ -108,11 +121,11 @@ namespace TenmoServer.Controllers
         {
             int userID = GetMyUserID();
 
-            transferlog.transferTypeId = 2;
-            transferlog.transferStatusId = 2;
-            transferlog.accountFrom = userID;
-            transferlog.accountTo = transferData.AccountIDToIncrease;
-            transferlog.amount = transferData.TransferAmount;
+            transferlog.TransferTypeId = 2;
+            transferlog.TransferStatusId = 2;
+            transferlog.AccountFrom = userID;
+            transferlog.AccountTo = transferData.AccountIDToIncrease;
+            transferlog.Amount = transferData.TransferAmount;
 
             bool transferLogAdded = accountDAO.AddTransfer(transferlog);
 

@@ -16,6 +16,8 @@ namespace TenmoServer.DAO
 
         bool UpdateUserBalance(TransferData transferData);
 
-        bool AddTransfer(TransferLog transfer);
+        bool AddTransfer(TransferLogEntry transfer);
+
+        TransferLogEntry DisplayMyTransfers(int userID);
     }
 }
