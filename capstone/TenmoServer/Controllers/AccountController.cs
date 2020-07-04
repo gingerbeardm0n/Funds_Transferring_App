@@ -18,6 +18,7 @@ namespace TenmoServer.Controllers
 
         private readonly IAccountDAO accountDAO;
         private readonly IUserDAO userDAO;
+        public TransferLog transferlog = new TransferLog();
 
         public AccountController(IUserDAO userDAO, IAccountDAO accountDAO)
         {
@@ -48,15 +49,21 @@ namespace TenmoServer.Controllers
             {
                 bool sender = accountDAO.UpdateMyBalance(transferData, userID);
                 bool receiver = accountDAO.UpdateUserBalance(transferData);
-
+                
                 if (sender == true && receiver == true)
                 {
-                    return Created("", transferData);
-                }
+                    bool transferAdded = AddTransfer(transferData);
+
+                    if (transferAdded == true)
+                    {
+                        return Created("", transferData);
+                    }
+                } 
             }
             return BadRequest();
         }
-        
+     
+
         [Authorize]
         [HttpPost("insert")]
         public ActionResult CreateTransfer(TransferLog transfer)
@@ -74,7 +81,7 @@ namespace TenmoServer.Controllers
         }
 
         [Authorize]
-        [HttpGet("get_users")]
+        [HttpGet("users")]
         public List<User> GetUsers()
         {
             List<User> users = userDAO.GetUsers();
@@ -95,6 +102,25 @@ namespace TenmoServer.Controllers
                 }
             }
             return userID;
+        }
+
+        public bool AddTransfer(TransferData transferData)
+        {
+            int userID = GetMyUserID();
+
+            transferlog.transferTypeId = 2;
+            transferlog.transferStatusId = 2;
+            transferlog.accountFrom = userID;
+            transferlog.accountTo = transferData.AccountIDToIncrease;
+            transferlog.amount = transferData.TransferAmount;
+
+            bool transferLogAdded = accountDAO.AddTransfer(transferlog);
+
+            if (transferLogAdded == true)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -46,7 +46,7 @@ namespace TenmoClient
         {
             List<API_User> userList = new List<API_User>();
 
-            RestRequest request = new RestRequest(API_BASE_URL + "get_users");
+            RestRequest request = new RestRequest(API_BASE_URL + "users");
 
             IRestResponse<List<API_User>> response = client.Get<List<API_User>>(request);
             if (response.ResponseStatus != ResponseStatus.Completed)

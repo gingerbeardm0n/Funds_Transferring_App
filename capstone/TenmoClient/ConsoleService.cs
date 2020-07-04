@@ -102,6 +102,7 @@ namespace TenmoClient
                         decimal balance = accountService.GetMyBalance();
                         Console.WriteLine();
                         Console.WriteLine("Your current account balance is: $" + balance);
+                        Console.WriteLine("\n Please press enter to continue");
                         Console.ReadLine();
 
                     }
@@ -140,9 +141,9 @@ namespace TenmoClient
                         }
                         else
                         {
-                            Console.WriteLine("\t Balance Updated!");
+                            Console.WriteLine("\t TE bucks have succsessfully been sent, balances have been updated, and the transfer has been logged in the system!");
                         }
-                        Console.WriteLine(transferDataFromServer);
+                        
                         
                     }
                     else if (menuSelection == 5)

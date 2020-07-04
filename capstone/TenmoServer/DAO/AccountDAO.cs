@@ -133,7 +133,6 @@ namespace TenmoServer.DAO
                     {
                         return false;
                     }
-
                 }
             }
             catch (SqlException ex)
@@ -142,7 +141,7 @@ namespace TenmoServer.DAO
             }
         }
 
-        public bool AddTransfer(TransferLog transfer)
+        public bool AddTransfer(TransferLog transferlog)
         {
             try
             {
@@ -151,13 +150,12 @@ namespace TenmoServer.DAO
                     conn.Open();
 
                     SqlCommand cmd = new SqlCommand(
-                        "INSERT INTO transfer VALUES" +
-                        "(@transfer_type_id, @transfer_status_id, @account_from, @account_to, @amount)", conn);
-                    cmd.Parameters.AddWithValue("@transfer_type_id", 2);
-                    cmd.Parameters.AddWithValue("@transfer_status_id", 2);
-                    cmd.Parameters.AddWithValue("@account_from", transfer.accountFrom);
-                    cmd.Parameters.AddWithValue("@account_to", transfer.accountTo);
-                    cmd.Parameters.AddWithValue("@amount", transfer.amount);
+                        "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (@transfer_type_id, @transfer_status_id, @account_from, @account_to, @amount);", conn);
+                    cmd.Parameters.AddWithValue("@transfer_type_id", transferlog.transferTypeId);
+                    cmd.Parameters.AddWithValue("@transfer_status_id", transferlog.transferStatusId);
+                    cmd.Parameters.AddWithValue("@account_from", transferlog.accountFrom);
+                    cmd.Parameters.AddWithValue("@account_to", transferlog.accountTo);
+                    cmd.Parameters.AddWithValue("@amount", transferlog.amount);
 
                     int count = cmd.ExecuteNonQuery();
 
