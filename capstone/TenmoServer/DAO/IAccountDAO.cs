@@ -18,6 +18,6 @@ namespace TenmoServer.DAO
 
         bool AddTransfer(TransferLogEntry transfer);
 
-        TransferLogEntry DisplayMyTransfers(int userID);
+        List<TransferLogEntry> DisplayMyTransfers(int userID);
     }
 }

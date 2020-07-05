@@ -39,6 +39,15 @@ namespace TenmoServer.Controllers
         }
 
         [Authorize]
+        [HttpGet("users")]
+        public List<User> GetUsers()
+        {
+            List<User> users = userDAO.GetUsers();
+
+            return users;
+        }
+
+        [Authorize]
         [HttpPost("transfer")]
         public ActionResult UpdateBalance(TransferData transferData)
         {
@@ -47,6 +56,7 @@ namespace TenmoServer.Controllers
 
             if (myBalance >= transferData.TransferAmount)
             {
+                //Should we put a a try catch here?
                 bool sender = accountDAO.UpdateMyBalance(transferData, userID);
                 bool receiver = accountDAO.UpdateUserBalance(transferData);
                 
@@ -63,42 +73,15 @@ namespace TenmoServer.Controllers
             return BadRequest();
         }
      
-
-        [Authorize]
-        [HttpPost("insert")]
-        public ActionResult CreateTransfer(TransferLogEntry transfer)
-        {
-            bool result = accountDAO.AddTransfer(transfer);
-
-            if (result)
-            {
-                return Created("", transfer);
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
-        [Authorize]
-        [HttpGet("users")]
-        public List<User> GetUsers()
-        {
-            List<User> users = userDAO.GetUsers();
-            
-            return users;
-        }
-
         [Authorize]
         [HttpGet("tansferHistory")]
-        public decimal DisplayMyTransfers()
+        public List<TransferLogEntry> DisplayMyTransfers()
         {
+            int userId = GetMyUserID();
 
-            int userID = GetMyUserID();
+            List<TransferLogEntry> myTransfers = accountDAO.DisplayMyTransfers(userId);
 
-            decimal balance = accountDAO.GetMyBalance(userID);
-
-            return balance;
+            return myTransfers;
         }
 
 

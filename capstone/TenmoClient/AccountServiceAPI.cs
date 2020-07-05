@@ -73,8 +73,6 @@ namespace TenmoClient
 
         public TransferData UpdateBalance(TransferData transferData)
         {
-            
-            
             RestRequest request = new RestRequest(API_BASE_URL + "transfer");
             request.AddJsonBody(transferData);
             IRestResponse<TransferData> response = client.Post<TransferData>(request);
@@ -99,21 +97,7 @@ namespace TenmoClient
             {
 
                 return response.Data;
-            }
-            
+            } 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

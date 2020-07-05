@@ -140,8 +140,9 @@ namespace TenmoServer.DAO
             }
         }
 
-        public TransferLogEntry DisplayMyTransfers(int userID)
+        public List<TransferLogEntry> DisplayMyTransfers(int userID)
         {
+            List<TransferLogEntry> myTransfers = new List<TransferLogEntry>();
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -163,10 +164,8 @@ namespace TenmoServer.DAO
                             Amount = Convert.ToDecimal(reader["amount"])
                         };
 
-                        return trasferDetail;
-                    }
-
-                    
+                        myTransfers.Add(trasferDetail);
+                    } 
                 }
             }
             catch (SqlException ex)
@@ -174,7 +173,7 @@ namespace TenmoServer.DAO
                 throw;
             }
 
-            return null;
+            return myTransfers;
         }
 
         public bool AddTransfer(TransferLogEntry transferlog)
@@ -211,31 +210,6 @@ namespace TenmoServer.DAO
                 throw;
             }
         }
-
-        //public List<TransferLog> DisplayTransfers()
-        //{
-        //    List<TransferLog> TransferHistory = new List<TransferLog>();
-        //    ReturnUser access = new ReturnUser();
-        //    TransferLog transferAccess = new TransferLog();
-
-        //    try
-        //    {
-        //        using (SqlConnection conn = new SqlConnection(connectionString))
-        //        {
-        //            conn.Open();
-        //            SqlCommand cmd = new SqlCommand("SELECT user_id, username, password_hash, salt FROM users", conn);
-        //            cmd.Parameters.AddWithValue("@", access);
-        //            SqlDataReader reader = cmd.ExecuteReader();
-
-        //            return TransferHistory;
-        //        }
-        //    }
-        //    catch (SqlException ex)
-        //    {
-        //        throw;
-        //    }
-        //}
     }
-
 }
 
