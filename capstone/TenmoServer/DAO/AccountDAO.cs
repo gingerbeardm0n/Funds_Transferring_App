@@ -150,7 +150,7 @@ namespace TenmoServer.DAO
                     conn.Open();
                     SqlCommand cmd = new SqlCommand("SELECT * FROM transfers WHERE account_from = @userID OR account_to = @userID; ", conn);
 
-                    SqlCommand cmd2 = new SqlCommand("SELECT * FROM transfers JOIN accounts on transfers.account_to = accounts.user_id WHERE account_from = @userID OR account_to = @userID; ", conn);
+                    //SqlCommand cmd2 = new SqlCommand("SELECT * FROM transfers JOIN accounts on transfers.account_to = accounts.user_id WHERE account_from = @userID OR account_to = @userID; ", conn);
 
                     cmd.Parameters.AddWithValue("@userID", userID);
                     SqlDataReader reader = cmd.ExecuteReader();

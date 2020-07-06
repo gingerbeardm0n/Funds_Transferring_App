@@ -111,6 +111,7 @@ namespace TenmoClient
                         List<TransferLogEntry> transfers = accountService.GetTransfers();
 
                         Console.WriteLine();
+                        Console.WriteLine("-------------------------------------------");
                         Console.WriteLine("\t Transfer History");
                         Console.WriteLine("-------------------------------------------");
                         Console.WriteLine("ID ".PadRight(10) + "From/To ".PadRight(10) + "Amount ".PadRight(10));
@@ -119,6 +120,29 @@ namespace TenmoClient
                         {
                             Console.WriteLine(trans.TransferId.ToString().PadRight(10) + trans.AccountFrom.ToString()+ "/" + trans.AccountTo.ToString().PadRight(10) + $"$" + trans.Amount.ToString());
                         }
+
+                        Console.Write("Please enter transfer ID to view details (0 to cancel): ");
+                        string userInput = Console.ReadLine();
+                        int digitInput = int.Parse(userInput);
+
+                        foreach (TransferLogEntry trans in transfers)
+                        {
+                            if(digitInput == trans.TransferId)
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine("--------------------------------------------");
+                                Console.WriteLine("Transfer Details");
+                                Console.WriteLine("--------------------------------------------");
+                                Console.WriteLine($"Id: " + trans.TransferId);
+                                Console.WriteLine($"From: " + trans.AccountFrom);
+                                Console.WriteLine($"To: " + trans.AccountTo);
+                                Console.WriteLine($"Type: " + trans.TransferTypeId);
+                                Console.WriteLine($"Status: Approved");
+                                Console.WriteLine($"Amount: $" + trans.Amount);
+                                Console.WriteLine();
+                            }
+                        }
+
                     }
                     else if (menuSelection == 3)
                     {
