@@ -118,7 +118,7 @@ namespace TenmoClient
 
                         foreach (TransferLogEntry trans in transfers)
                         {
-                            Console.WriteLine(trans.TransferId.ToString().PadRight(10) + trans.AccountFrom.ToString()+ "/" + trans.AccountTo.ToString().PadRight(10) + $"$" + trans.Amount.ToString());
+                            Console.WriteLine(trans.TransferId.ToString().PadRight(10) + trans.UserNameFrom.ToString()+ "/" + trans.UserNameTo.ToString().PadRight(10) + $"$" + trans.Amount.ToString());
                         }
 
                         Console.Write("Please enter transfer ID to view details (0 to cancel): ");
@@ -134,8 +134,8 @@ namespace TenmoClient
                                 Console.WriteLine("Transfer Details");
                                 Console.WriteLine("--------------------------------------------");
                                 Console.WriteLine($"Id: " + trans.TransferId);
-                                Console.WriteLine($"From: " + trans.AccountFrom);
-                                Console.WriteLine($"To: " + trans.AccountTo);
+                                Console.WriteLine($"From: " + trans.UserNameFrom);
+                                Console.WriteLine($"To: " + trans.UserNameTo);
                                 Console.WriteLine($"Type: " + trans.TransferTypeId);
                                 Console.WriteLine($"Status: Approved");
                                 Console.WriteLine($"Amount: $" + trans.Amount);

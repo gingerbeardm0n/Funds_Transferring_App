@@ -148,12 +148,12 @@ namespace TenmoServer.DAO
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand("SELECT * FROM transfers WHERE account_from = @userID OR account_to = @userID; ", conn);
+                    //SqlCommand cmd = new SqlCommand("SELECT * FROM transfers WHERE account_from = @userID OR account_to = @userID; ", conn);
 
-                    //SqlCommand cmd2 = new SqlCommand("SELECT * FROM transfers JOIN accounts on transfers.account_to = accounts.user_id WHERE account_from = @userID OR account_to = @userID; ", conn);
+                    SqlCommand cmd2 = new SqlCommand("SELECT * FROM transfers JOIN accounts a1 on transfers.account_to = a1.user_id JOIN accounts a2 on transfers.account_from = a2.user_id JOIN users u1 on a1.user_id = u1.user_id JOIN users u2 on a2.user_id = u2.user_id WHERE account_from = 2 OR account_to = 3 AND account_from = 3 OR account_to = 1;", conn);
 
-                    cmd.Parameters.AddWithValue("@userID", userID);
-                    SqlDataReader reader = cmd.ExecuteReader();
+                    cmd2.Parameters.AddWithValue("@userID", userID);
+                    SqlDataReader reader = cmd2.ExecuteReader();
 
                     while (reader.Read())
                     {
@@ -164,7 +164,9 @@ namespace TenmoServer.DAO
                             TransferStatusId = Convert.ToInt32(reader["transfer_status_id"]),
                             AccountFrom = Convert.ToInt32(reader["account_from"]),
                             AccountTo = Convert.ToInt32(reader["account_to"]),
-                            Amount = Convert.ToDecimal(reader["amount"])
+                            Amount = Convert.ToDecimal(reader["amount"]),
+                            UserNameFrom = Convert.ToString(reader["usernameFrom"]),
+                            UserNameTo = Convert.ToString(reader["usernameTo"])
                         };
 
                         myTransfers.Add(transferDetail);
