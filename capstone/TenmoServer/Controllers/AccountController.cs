@@ -74,7 +74,7 @@ namespace TenmoServer.Controllers
         }
      
         [Authorize]
-        [HttpGet("tansferHistory")]
+        [HttpGet("transferHistory")]
         public List<TransferLogEntry> DisplayMyTransfers()
         {
             int userId = GetMyUserID();

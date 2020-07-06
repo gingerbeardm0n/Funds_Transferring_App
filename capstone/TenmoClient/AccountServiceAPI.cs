@@ -99,5 +99,34 @@ namespace TenmoClient
                 return response.Data;
             } 
         }
+
+        public List<TransferLogEntry> GetTransfers()
+        {
+            List<TransferLogEntry> transferList = new List<TransferLogEntry>();
+
+            RestRequest request = new RestRequest(API_BASE_URL + "transferHistory");
+
+            IRestResponse<List<TransferLogEntry>> response = client.Get<List<TransferLogEntry>>(request);
+            if (response.ResponseStatus != ResponseStatus.Completed)
+            {
+                throw new Exception("An error occurred communicating with the server.");
+
+            }
+            else if (!response.IsSuccessful)
+            {
+                if (!string.IsNullOrWhiteSpace(response.Data.ToString()))
+                {
+                    throw new Exception("An error message was received: " + response.Data);
+                }
+                else
+                {
+                    throw new Exception("An error response was received from the server. The status code is " + (int)response.StatusCode);
+                }
+            }
+            else
+            {
+                return response.Data;
+            }
+        }
     }
 }

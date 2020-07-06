@@ -108,8 +108,17 @@ namespace TenmoClient
                     }
                     else if (menuSelection == 2)
                     {
-                        Console.WriteLine();
+                        List<TransferLogEntry> transfers = accountService.GetTransfers();
 
+                        Console.WriteLine();
+                        Console.WriteLine("\t Transfer History");
+                        Console.WriteLine("-------------------------------------------");
+                        Console.WriteLine("ID ".PadRight(10) + "From/To ".PadRight(10) + "Amount ".PadRight(10));
+
+                        foreach (TransferLogEntry trans in transfers)
+                        {
+                            Console.WriteLine(trans.TransferId.ToString().PadRight(10) + trans.AccountFrom.ToString()+ "/" + trans.AccountTo.ToString().PadRight(10) + $"$" + trans.Amount.ToString());
+                        }
                     }
                     else if (menuSelection == 3)
                     {
@@ -141,6 +150,7 @@ namespace TenmoClient
                         }
                         else
                         {
+                            Console.WriteLine();
                             Console.WriteLine("\t TE bucks have succsessfully been sent, balances have been updated, and the transfer has been logged in the system!");
                         }
                         
@@ -152,7 +162,16 @@ namespace TenmoClient
                     }
                     else if (menuSelection == 6)
                     {
+                        List<API_User> userList = accountService.GetUsers();
+                        Console.WriteLine();
+                        Console.WriteLine("Users");
+                        Console.WriteLine("ID".PadRight(10) + "Name");
+                        Console.WriteLine("-------------------------------------------");
 
+                        foreach (API_User person in userList)
+                        {
+                            Console.WriteLine(person.UserId.ToString().PadRight(10) + person.Username);
+                        }
                     }
                     else if (menuSelection == 7)
                     {

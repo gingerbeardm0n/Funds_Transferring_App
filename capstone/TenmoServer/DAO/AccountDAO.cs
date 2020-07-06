@@ -149,22 +149,25 @@ namespace TenmoServer.DAO
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand("SELECT * FROM transfers WHERE account_from = @userID OR account_to = @userID; ", conn);
+
+                    SqlCommand cmd2 = new SqlCommand("SELECT * FROM transfers JOIN accounts on transfers.account_to = accounts.user_id WHERE account_from = @userID OR account_to = @userID; ", conn);
+
                     cmd.Parameters.AddWithValue("@userID", userID);
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
-                        TransferLogEntry trasferDetail = new TransferLogEntry()
+                        TransferLogEntry transferDetail = new TransferLogEntry()
                         {
                             TransferId = Convert.ToInt32(reader["transfer_id"]),
                             TransferTypeId = Convert.ToInt32(reader["transfer_type_id"]),
                             TransferStatusId = Convert.ToInt32(reader["transfer_status_id"]),
-                            AccountFrom = Convert.ToInt32(reader["acount_from"]),
+                            AccountFrom = Convert.ToInt32(reader["account_from"]),
                             AccountTo = Convert.ToInt32(reader["account_to"]),
                             Amount = Convert.ToDecimal(reader["amount"])
                         };
 
-                        myTransfers.Add(trasferDetail);
+                        myTransfers.Add(transferDetail);
                     } 
                 }
             }
